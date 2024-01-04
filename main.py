@@ -33,9 +33,24 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Sidebar with instructions
+def show_instructions_sidebar():
+    st.sidebar.title("Instructions")
+    st.sidebar.info(
+        "Welcome to Brain Tumor Identification using AI! This tool allows you to submit questions about brain tumor images and receive AI-generated conclusions based on your input.\n\n"
+        "1. Enter your question or input text in the text box, Pass the instructions Carefully to AI.\n"
+        "2. Upload a brain tumor image (in JPG, JPEG, or PNG format), You can upload X-ray, MRI or any other Scan Report\n"
+        "3. Click the 'Check with AI' button to get AI-generated conclusions.\n\n"
+        "**Note:** The predictions made by the AI model are for demonstration purposes only. Always consult with a qualified professional for accurate information."
+)
+
 # Page title
 st.markdown("<h1 style='color: skyblue; text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);'>Brain Tumor Identification using AI</h1>", unsafe_allow_html=True)
 #st.title("Brain Tumor Identification using AI")
+
+# Show instructions in the sidebar
+if st.sidebar.button("ℹ️ Show Instructions"):
+    show_instructions_sidebar()
 
 input_text = st.text_input('Convey what you want to ask AI here...')
 
