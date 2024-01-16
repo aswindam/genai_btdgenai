@@ -2,17 +2,18 @@ import streamlit as st
 from PIL import Image
 import google.generativeai as genai
 import base64
-from st_pages import Page, add_page_title, show_pages, hide_pages
+import warnings
+
 
 def code():
-
     # Creating API key from google-gemini and configuring API key
+    global img
     api_key = 'AIzaSyB9eNsm-iOLawbIm-yvuD7vmMsD5IDF1bY'
     genai.configure(api_key=api_key)
 
     # Custom CSS for background image
     # Read the image file
-    image_path = "background.png"
+    image_path = "app/background.png"
     image_data = open(image_path, "rb").read()
 
     # Convert the image data to base64
@@ -33,7 +34,9 @@ def code():
     )
 
     # Page title
-    st.markdown("<h1 style='color: skyblue; text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);'>Brain Tumor Identification using AI</h1>", unsafe_allow_html=True)
+    st.markdown(
+        "<h1 style='color: skyblue; text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);'>Brain Tumor Identification using AI</h1>",
+        unsafe_allow_html=True)
 
     input_text = st.text_input('Convey what you want to ask AI here...')
 
@@ -48,8 +51,7 @@ def code():
         model = genai.GenerativeModel('gemini-pro-vision')
         response = model.generate_content([input_prompt, input_text, img], stream=True)
         response.resolve()
-        conclusion = response.text
-        return conclusion
+        return response
 
     if st.button("Check with AI"):
         if uploaded_file is not None:
@@ -61,9 +63,12 @@ def code():
                                """
                 conclusion = gen_content(input_prompt, input_text, img)
 
-                # Display the result
-                result = st.text_area("Conclusion based on your input and uploaded image", value=conclusion, height=300,
-                             key="result_conclusion")
+                warnings.filterwarnings(action='ignore')
+
+                result = st.text_area("Conclusion based on your input and uploaded image", value=conclusion.text,
+                                      height=300,
+                                      key="result_conclusion")
+
                 st.write(result)
 
             except Exception as e:
@@ -81,17 +86,9 @@ def code():
         """
     )
 
-    st.sidebar.title("Welcome to Brain Tumor Identification using AI! This tool allows you to submit questions about "
-                     "brain tumor images and receive AI-generated conclusions based on your input.\n\n")
-
-    hide_pages([Page('main.py')])
-
-    show_pages(
-        [
-            Page("source.py", "About", "🏠"),
-            Page("assist.py", "Assistant", "🤖")
-        ]
-    )
+    st.sidebar.title("Welcome to Brain Tumor Identification using AI! ")
+    st.sidebar.subheader('This tool allows you to submit questions about '
+                         'brain tumor images and receive AI-generated conclusions based on your input.\n\n')
 
     st.sidebar.title('Instructions')
     st.sidebar.write(
