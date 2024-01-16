@@ -25,6 +25,7 @@ def code():
                     background-image: url('data:image/png;base64,{image_base64}');
                     background-size: cover;
                     background-repeat: no-repeat;
+                    opacity: 0.6
                 }}
             </style>
             """,
@@ -40,7 +41,6 @@ def code():
 
     if 'previous_input' not in st.session_state:
         st.session_state['previous_input'] = ''
-
 
     def get_response(prompt):
         input_prompt = """You are an expert in understanding tumors in the brain.
@@ -61,13 +61,13 @@ def code():
         <style>
             .stTextInput {
                 position: fixed;
-                bottom: 60px;
-                width: 1000px; 
+                bottom: 80px;
+                width: 900px; 
             }
             .stButton {
                 position: fixed;
-                bottom: 60px;
-                margin-left: 950px; 
+                bottom: 80px;
+                margin-left: 850px; 
             }
         </style>
         """,

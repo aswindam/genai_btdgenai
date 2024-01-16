@@ -63,8 +63,6 @@ def code():
                                """
                 conclusion = gen_content(input_prompt, input_text, img)
 
-                warnings.filterwarnings(action='ignore')
-
                 result = st.text_area("Conclusion based on your input and uploaded image", value=conclusion.text,
                                       height=300,
                                       key="result_conclusion")
