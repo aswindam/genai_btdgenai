@@ -29,3 +29,12 @@ else:
 # Display content only if it is not None
 if content is not None:
     st.write(content)
+
+
+st.sidebar.title('Terms and Conditions 📃')
+
+st.sidebar.markdown("""
+1. **All content and intellectual property on this platform are protected by copyright; unauthorized use is strictly 
+prohibited.**  
+2. **The results provided are for informational purposes; consult a professional for medical advice.**  
+3. **Privacy is prioritized; data is handled with utmost confidentiality.**  """)
