@@ -48,7 +48,7 @@ def code():
         st.image(img, caption='Uploaded Image', use_column_width=True)
 
     def gen_content(input_prompt, input_text, img):
-        model = genai.GenerativeModel('gemini-pro-vision')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content([input_prompt, input_text, img], stream=True)
         response.resolve()
         return response
