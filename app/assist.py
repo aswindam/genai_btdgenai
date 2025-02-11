@@ -45,7 +45,8 @@ def code():
     def get_response(prompt):
         input_prompt = """You are an expert in understanding tumors in the brain.
                           You are an assistant for users, and you will receive input queries from users.
-                          You will have to answer questions based on the input.
+                          You will have to answer questions based on the input. Any questions not related 
+                          to Brain tumors simply answer accordingly that you are in training phase and not aware of this topic
                        """
         response = chat.send_message([input_prompt, prompt])
         return response

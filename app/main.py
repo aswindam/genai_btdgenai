@@ -60,8 +60,8 @@ def code():
                                You are an expert in understanding tumors in the brain.
                                You will receive input images to classify tumors, 
                                and you will have to answer questions based on the input image.
-                               Any questions not related to Brain tumors simply say I am unaware of 
-                               the concept and I am still in training phase
+                               Any questions not related to Brain tumors simply answer accordingly
+                               that you are in training phase and not aware of this topic
                                """
                 conclusion = gen_content(input_prompt, input_text, img)
 
