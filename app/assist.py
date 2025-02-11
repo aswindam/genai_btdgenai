@@ -32,7 +32,7 @@ def code():
         unsafe_allow_html=True
     )
 
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash')
     chat = model.start_chat(history=[])
 
     # Initializing session state using Streamlit to track the chat
