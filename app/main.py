@@ -65,11 +65,9 @@ def code():
                                """
                 conclusion = gen_content(input_prompt, input_text, img)
 
-                result = st.text_area("Conclusion based on your input and uploaded image", value=conclusion.text,
+                st.text_area("Conclusion based on your input and uploaded image", value=conclusion.text,
                                       height=300,
                                       key="result_conclusion")
-
-                st.write(result)
 
             except Exception as e:
                 st.error(f"Error: {e}")
