@@ -3,21 +3,15 @@ import streamlit as st
 import google.generativeai as genai
 import base64
 
-
 def code():
-
     api_key = 'AIzaSyCBr_TtY7MksHOEYRd38kD-hmqIKS25RvM'
     genai.configure(api_key=api_key)
 
-    # Custom CSS for background image
-    # Read the image file
+    # Background image
     image_path = "app/Chatbot.png"
     image_data = open(image_path, "rb").read()
-
-    # Convert the image data to base64
     image_base64 = base64.b64encode(image_data).decode()
 
-    # Set the background image using a container with custom style
     st.markdown(
         f"""
             <style>
@@ -35,71 +29,56 @@ def code():
     model = genai.GenerativeModel('gemini-2.0-flash')
     chat = model.start_chat(history=[])
 
-    # Initializing session state using Streamlit to track the chat
+    # Session states
     if 'chat_history' not in st.session_state:
         st.session_state['chat_history'] = []
-
     if 'previous_input' not in st.session_state:
         st.session_state['previous_input'] = ''
 
     def get_response(prompt):
-        input_prompt = """You are an expert in understanding tumors in the brain.
-                          You are an assistant for users, and you will receive input queries from users.
-                          You will have to answer questions based on the input. Any questions not related 
-                          to Brain tumors simply answer accordingly that you are in training phase and not aware of this topic
-                       """
+        input_prompt = """
+        You are a polite and helpful AI assistant specializing in brain tumor analysis.
+        - If the question is about brain tumors, answer thoroughly, clearly, and helpfully.
+        - If it is about another medical topic (not brain-related), politely explain that you are trained only in brain tumor topics and cannot answer that question.
+        - If it is not medical at all, politely say you do not have information on that topic.
+        """
         response = chat.send_message([input_prompt, prompt])
         return response
 
-
-    # Initializing our Streamlit app
+    # App UI
     st.header('Health Assistant 💬')
-    st.subheader('I am an AI assistant to help you here.')
+    st.subheader('I am an AI assistant here to help you with questions about brain tumors.')
 
-    # Apply custom CSS to fix input box and button at the bottom
-    st.markdown(
-        """
-        <style>
-            .stTextInput {
-                position: fixed;
-                bottom: 80px;
-                width: 900px; 
-            }
-            .stButton {
-                position: fixed;
-                bottom: 80px;
-                margin-left: 850px; 
-            }
-        </style>
-        """,
-        unsafe_allow_html=True
+    # Chat input box
+    input_text = st.text_input(
+        'Please Enter your query here',
+        key='input_query',
+        value=st.session_state.get('previous_input', ''),
+        on_change=lambda: send_message(),  # Trigger on pressing Enter
     )
 
-    # Input text box at the bottom
-    input_text = st.text_input('Please Enter your query here', key='input_query',
-                               value=st.session_state.get('previous_input', ''))
+    def send_message():
+        query = st.session_state.input_query.strip()
+        if query:
+            response = get_response(query)
+            st.session_state.chat_history.append(('User', query))
+            st.session_state.previous_input = ''  
+            st.session_state.input_query = ''  # Clear the text box immediately
 
-    submit_button = st.button('Ask AI')
+            for chunk in response:
+                st.session_state.chat_history.append(('Bot', chunk.text))
 
-    if submit_button and input_text:
-        response = get_response(input_text)
-        # Adding user query and response to chat history session
-        st.session_state['chat_history'].append(('User', input_text))
-        st.session_state.previous_input = ''  # Clear the input text
-        st.markdown(f'<div style="color: white;">User: {input_text}<br></div>', unsafe_allow_html=True)
-        # Display the bots response dynamically
-        for chunk in response:
-            # st.write(chunk.text)
-            st.session_state['chat_history'].append(('Bot', chunk.text))
-            st.markdown(f'<div style="color: grey;">Bot: {chunk.text}</div>', unsafe_allow_html=True)
+    # Display chat history
+    for sender, message in st.session_state.chat_history:
+        color = "white" if sender == "User" else "grey"
+        st.markdown(f'<div style="color: {color};"><b>{sender}:</b> {message}</div>', unsafe_allow_html=True)
 
-
+    # Sidebar
     st.sidebar.title("Welcome to the Brain Tumor Health Assistant!")
-    st.sidebar.title('Instructions')
+    st.sidebar.subheader('Instructions')
     st.sidebar.write("**Input Query:** Enter your brain tumor-related queries in the text box at the bottom of the page.")
-    st.sidebar.write('**Ask AI:** Click the "Ask AI" button to submit your question and receive expert responses from the health assistant.')
-    st.sidebar.write('**Chat History:** View the conversation history displayed above to track queries and AI responses. The chatbox is designed to assist and provide information on brain tumors.')
-
+    st.sidebar.write('Press **Enter** or click the button to submit your question.')
+    st.sidebar.write('**Chat History:** Your conversation history will be displayed above.')
 
 if __name__ == "__main__":
     code()
