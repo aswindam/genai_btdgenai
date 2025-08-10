@@ -8,7 +8,7 @@ import warnings
 def code():
     # Creating API key from google-gemini and configuring API key
     global img
-    api_key = 'AIzaSyB9eNsm-iOLawbIm-yvuD7vmMsD5IDF1bY'
+    api_key = 'AIzaSyCBr_TtY7MksHOEYRd38kD-hmqIKS25RvM'
     genai.configure(api_key=api_key)
 
     # Custom CSS for background image
@@ -57,11 +57,9 @@ def code():
         if uploaded_file is not None:
             try:
                 input_prompt = """
-                               You are an expert in understanding tumors in the brain.
-                               You will receive input images to classify tumors, 
-                               and you will have to answer questions based on the input image.
-                               Any questions not related to Brain tumors simply answer accordingly
-                               that you are in training phase and not aware of this topic
+                               You are an expert in analyzing and interpreting brain tumor images. You will receive input images for tumor classification and will be required to answer questions based on the information derived from those images.
+If a question is related to other medical topics outside brain tumors, respond politely that you were specifically trained in brain tumor analysis and cannot provide accurate information on that topic.
+If a question is not medical at all, respond politely that you do not have knowledge on that subject.
                                """
                 conclusion = gen_content(input_prompt, input_text, img)
 
