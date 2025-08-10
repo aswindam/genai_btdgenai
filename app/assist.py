@@ -6,7 +6,7 @@ import base64
 
 def code():
 
-    api_key = 'AIzaSyB9eNsm-iOLawbIm-yvuD7vmMsD5IDF1bY'
+    api_key = 'AIzaSyCBr_TtY7MksHOEYRd38kD-hmqIKS25RvM'
     genai.configure(api_key=api_key)
 
     # Custom CSS for background image
