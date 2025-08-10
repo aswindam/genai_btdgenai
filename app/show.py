@@ -1,7 +1,6 @@
 import streamlit as st
 import importlib
 
-
 # Function to load and display content from a module
 def load_and_display_module(module_name):
     try:
@@ -11,10 +10,12 @@ def load_and_display_module(module_name):
         st.error(f"Module {module_name} not found.")
         return None
 
-
 # List of page names
 page_names = ["Home 🏠", "Assist 💬", "AI Model ✏️"]
 selected_page = st.sidebar.selectbox("Select a page", page_names)
+
+# Alert for better visibility in dark mode
+st.info("💡 For better visibility and comfort, we recommend switching to **Dark Mode** in Streamlit settings (top-right menu).")
 
 # Display content based on the selected tab
 if selected_page == "AI Model ✏️":
@@ -30,11 +31,10 @@ else:
 if content is not None:
     st.write(content)
 
-
+# Sidebar T&C
 st.sidebar.title('Terms and Conditions 📃')
-
 st.sidebar.markdown("""
-1. **All content and intellectual property on this platform are protected by copyright; unauthorized use is strictly 
-prohibited.**  
+1. **All content and intellectual property on this platform are protected by copyright; unauthorized use is strictly prohibited.**  
 2. **The results provided are for informational purposes; consult a professional for medical advice.**  
-3. **Privacy is prioritized; data is handled with utmost confidentiality.**  """)
+3. **Privacy is prioritized; data is handled with utmost confidentiality.**
+""")
