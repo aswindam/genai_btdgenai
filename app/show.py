@@ -1,6 +1,16 @@
 import streamlit as st
 import importlib
 
+# JavaScript alert for Dark Mode suggestion
+st.markdown(
+    """
+    <script>
+        alert("💡 For better visibility and comfort, we recommend using Dark Mode in Streamlit settings (top-right menu).");
+    </script>
+    """,
+    unsafe_allow_html=True
+)
+
 # Function to load and display content from a module
 def load_and_display_module(module_name):
     try:
@@ -13,9 +23,6 @@ def load_and_display_module(module_name):
 # List of page names
 page_names = ["Home 🏠", "Assist 💬", "AI Model ✏️"]
 selected_page = st.sidebar.selectbox("Select a page", page_names)
-
-# Alert for better visibility in dark mode
-st.info("💡 For better visibility and comfort, we recommend switching to **Dark Mode** in Streamlit settings (top-right menu).")
 
 # Display content based on the selected tab
 if selected_page == "AI Model ✏️":
