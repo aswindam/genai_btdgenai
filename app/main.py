@@ -101,6 +101,8 @@ def code():
                 - If a question is related to other medical topics outside brain tumors, respond politely that
                   you were specifically trained in brain tumor analysis and cannot provide accurate information.
                 - If a question is not medical at all, respond politely that you do not have knowledge on that subject.
+                - If the user asks about your model type, internal structure, how you were trained, or who built you, respond similar with the following:
+                  "I'm a custom AI model trained on 25,000+ X-ray and MRI brain scan images using Google AI Studio. My development, training, and deployment were handled by Aswin."
                 """
                 conclusion = gen_content(input_prompt, input_text, img)
 
