@@ -3,7 +3,7 @@ from PIL import Image
 import google.generativeai as genai
 import base64
 import warnings
-
+from pathlib import Path
 
 def code():
     # Creating API key from google-gemini and configuring API key
@@ -12,63 +12,75 @@ def code():
     genai.configure(api_key=api_key)
 
     # Background image
-    image_path = "app/background.png"
-    image_data = open(image_path, "rb").read()
-    image_base64 = base64.b64encode(image_data).decode()
+    bg_path = Path("app/background.png")
+    bg_b64 = ""
+    if bg_path.exists():
+        bg_b64 = base64.b64encode(bg_path.read_bytes()).decode()
+
+    # image_path = "app/background.png"    
+    # image_data = open(image_path, "rb").read()
+    # image_base64 = base64.b64encode(image_data).decode()
 
     # Dark mode + overlay styling
-    st.markdown(
-        f"""
-        <style>
-            /* Dark background overlay over image */
-            .stApp {{
-                background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-                            url('data:image/png;base64,{image_base64}');
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                color: #f5f5f5 !important;
-            }}
 
-            /* General text */
-            div, p, span, label {{
-                color: #f5f5f5 !important;
-            }}
+    st.markdown(f"""
+    <style>
+    /* Background with dark overlay */
+    .stApp {{
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)){' , url("data:image/png;base64,' + bg_b64 + '")' if bg_b64 else ''};
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    }}
 
-            /* Input fields */
-            input[type="text"], textarea, .stTextInput > div > div > input {{
-                background-color: #1e1e1e !important;
-                color: #f5f5f5 !important;
-                border: 1px solid #444 !important;
-            }}
+    /* Text color */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stVerticalBlock"] * {{
+    color: #f5f5f5 !important;
+    }}
 
-            /* File uploader */
-            section[data-testid="stFileUploader"] {{
-                background-color: rgba(30, 30, 30, 0.8) !important;
-                border-radius: 8px;
-                padding: 10px;
-            }}
+    /* Input box */
+    .stTextInput input {{
+    background-color: #1e1e1e !important;
+    color: #f5f5f5 !important;
+    border: 1px solid #444 !important;
+    }}
 
-            /* Sidebar */
-            section[data-testid="stSidebar"] {{
-                background-color: #1a1a1a !important;
-                color: #f5f5f5 !important;
-            }}
+    /* Text area */
+    .stTextArea textarea {{
+    background-color: #1e1e1e !important;
+    color: #f5f5f5 !important;
+    border: 1px solid #444 !important;
+    }}
 
-            /* Buttons */
-            button[kind="primary"] {{
-                background-color: #444 !important;
-                color: #f5f5f5 !important;
-                border: none !important;
-            }}
-            button[kind="primary"]:hover {{
-                background-color: #666 !important;
-                color: white !important;
-            }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    /* File uploader */
+    [data-testid="stFileUploader"], [data-testid="stFileUploaderDropzone"] {{
+    background-color: rgba(30,30,30,0.8) !important;
+    border-radius: 8px !important;
+    border: 1px dashed #444 !important;
+    }}
+
+    /* Sidebar */
+    [data-testid="stSidebar"] {{
+    background-color: #1a1a1a !important;
+    }}
+    [data-testid="stSidebar"] * {{
+    color: #f5f5f5 !important;
+    }}
+
+    /* Buttons */
+    .stButton button {{
+    background-color: #444 !important;
+    color: #f5f5f5 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    }}
+    .stButton button:hover {{
+    background-color: #666 !important;
+    color: #ffffff !important;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+
 
     # Page title
     st.markdown(
