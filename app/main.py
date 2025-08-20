@@ -4,11 +4,32 @@ import google.generativeai as genai
 import base64
 import warnings
 from pathlib import Path
+from load_dotenv import load_dotenv
+import os
+import streamlit.components.v1 as components
+
+
+load_dotenv()
+
+# Show modal popup on first load
+# Call this once at the start of your app
+components.html(
+    """
+    <script type="text/javascript">
+        window.onload = function() {
+            alert("⚠️ This app starts in Dark Mode. You can also adjust settings from the top-right menu.");
+        }
+    </script>
+    """,
+    height=0,  # no visible space taken
+)
+
+
 
 def code():
     # Creating API key from google-gemini and configuring API key
     global img
-    api_key = 'AIzaSyCBr_TtY7MksHOEYRd38kD-hmqIKS25RvM'
+    api_key=os.getenv("genai_api_key")
     genai.configure(api_key=api_key)
 
     # Background image
