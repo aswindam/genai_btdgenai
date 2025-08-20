@@ -1,14 +1,17 @@
 import streamlit as st
 import importlib
+import streamlit.components.v1 as components
 
 # JavaScript alert for Dark Mode suggestion
-st.markdown(
+components.html(
     """
-    <script>
-        alert("💡 For better visibility and comfort, we recommend using Dark Mode in Streamlit settings (top-right menu).");
+    <script type="text/javascript">
+        window.onload = function() {
+            alert("⚠️ This app starts in Dark Mode. You can also adjust settings from the top-right menu.");
+        }
     </script>
     """,
-    unsafe_allow_html=True
+    height=0,  # no visible space taken
 )
 
 # Function to load and display content from a module
