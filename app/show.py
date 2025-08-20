@@ -6,9 +6,7 @@ import streamlit.components.v1 as components
 components.html(
     """
     <script type="text/javascript">
-        window.onload = function() {
-            alert("⚠️ This app starts in Dark Mode. You can also adjust settings from the top-right menu.");
-        }
+        alert("⚠️ This app starts in Dark Mode. You can also adjust settings from the top-right menu.");
     </script>
     """,
     height=0,  # no visible space taken
