@@ -1,10 +1,17 @@
-# streamlit_app.py (at repo root)
+# streamlit_app.py
 from pathlib import Path
 import sys
 
+# Get the project root directory
 ROOT = Path(__file__).resolve().parent
-# Put the REPO ROOT first on sys.path
+
+# Add the root directory to the Python path
 sys.path.insert(0, str(ROOT))
 
-# Import the app package entry
-from app import show  # this executes app/show.py
+# Import and run the show() function from the app package
+# Note: We assume your show.py has a main function, let's call it 'run_app()'
+from app.show import run_app
+
+# Execute the app
+if __name__ == "__main__":
+    run_app()
