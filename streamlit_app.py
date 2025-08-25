@@ -1,8 +1,10 @@
-import os
+# streamlit_app.py (at repo root)
+from pathlib import Path
 import sys
 
-# Ensure `app` folder is in the Python path
-sys.path.append(os.path.join(os.path.dirname(__file__), "app"))
+ROOT = Path(__file__).resolve().parent
+# Put the REPO ROOT first on sys.path
+sys.path.insert(0, str(ROOT))
 
-# Import and run your Streamlit app
-import show
+# Import the app package entry
+from app import show  # this executes app/show.py
