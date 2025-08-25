@@ -17,7 +17,7 @@ import importlib
 import streamlit.components.v1 as components
 
 # This is a diagnostic line to help debug. It will print the Python path in your app.
-st.write("Current Python Path:", sys.path)
+# st.write("Current Python Path:", sys.path)
 
 def run_app():
     components.html(
