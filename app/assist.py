@@ -2,9 +2,13 @@ import st_pages
 import streamlit as st
 import google.generativeai as genai
 import base64
+import os
+
+api_key=os.getenv("genai_api_key")
+if not api_key:
+    api_key='AIzaSyDkiTgRsP3BWPOlXW93lBY7a17noBy-RZk'
 
 def code():
-    api_key = 'AIzaSyCBr_TtY7MksHOEYRd38kD-hmqIKS25RvM'
     genai.configure(api_key=api_key)
 
     # Background image
