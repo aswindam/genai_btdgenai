@@ -3,7 +3,10 @@ import base64
 import streamlit as st
 from PIL import Image
 
-import llm
+try:  # imported as part of the ``app`` package (streamlit_app.py entry point)
+    from app import llm
+except ImportError:  # run directly from inside the app/ directory
+    import llm
 
 
 DEFAULT_QUESTION = ("Analyse this scan and describe any tumour related findings, "
@@ -37,7 +40,7 @@ def code():
 
     # Page title
     st.markdown(
-        "<h1 style='color: skyblue; text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);'>Brain Tumor Identification using AI</h1>",
+        "<h1 style='color: skyblue; text-shadow: 4px 4px 6px rgba(0, 0, 0, 1);'>Brain Tumor Identification using AI</h1>",
         unsafe_allow_html=True)
 
     input_text = st.text_input('Convey what you want to ask AI here...')
@@ -87,22 +90,20 @@ def code():
         """
         ---
         #### Disclaimer:
-        The predictions made by the AI model are for demonstration purposes only and should not be considered as definitive truths. Always consult with a qualified professional for accurate information.  
+        The predictions made by the AI model are for demonstration purposes only and should not be considered as definitive truths.  
+        Always consult with a qualified professional for accurate information.  
         Model Developed: Aswin Damarapalli
         """
     )
 
-    st.sidebar.title("Welcome to Brain Tumor Identification using AI! ")
-    st.sidebar.subheader('This tool allows you to submit questions about '
-                         'brain tumor images and receive AI-generated conclusions based on your input.\n\n')
-
+    st.sidebar.title("Welcome to Brain Tumor Identification using AI!")
+    st.sidebar.subheader(
+        'This tool allows you to submit questions about brain tumor images and receive AI-generated conclusions based on your input.\n\n'
+    )
     st.sidebar.title('Instructions')
-    st.sidebar.write(
-        "Enter your question or input text in the text box, Pass the instructions Carefully to AI.")
-    st.sidebar.write(
-        'Upload a brain tumor image (in JPG, JPEG, or PNG format), You can upload X-ray, MRI or any other Scan Report')
-    st.sidebar.write(
-        'Click the "Check with AI" button to get AI-generated conclusions.')
+    st.sidebar.write("Enter your question or input text in the text box.")
+    st.sidebar.write("Upload a brain tumor image (JPG, JPEG, PNG format).")
+    st.sidebar.write('Click **"Check with AI"** to get conclusions.')
 
 
 if __name__ == "__main__":

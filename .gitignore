@@ -1,18 +1,55 @@
-# Byte-compiled files
+# Python
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+*.manifest
+*.spec
 
 # Virtual environments
-venv/
-.venv/
+.env
+.venv
 env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Streamlit
+.streamlit/secrets.toml
 
 # Secrets - never commit API keys
 key.py
 app/key.py
-.streamlit/secrets.toml
 
-# Local logs and test artefacts
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE / Editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs & caches
 *.log
-ui_*.png
-verify_out.log
+*.pot
+*.pyc
+*.pkl
+*.pickle
+__pycache__/
+.cache/
+*.sqlite3
+
+# Build / Packaging
+dist/
+build/
+*.tar.gz
+*.whl

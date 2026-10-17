@@ -6,10 +6,14 @@ Rendered with Streamlit's native chat primitives (``st.chat_message`` /
 """
 
 import base64
+import os
 
 import streamlit as st
 
-import llm
+try:  # imported as part of the ``app`` package (streamlit_app.py entry point)
+    from app import llm
+except ImportError:  # run directly from inside the app/ directory
+    import llm
 
 SYSTEM_PROMPT = """You are a knowledgeable, empathetic assistant specialised in brain tumours.
 Answer questions about brain tumours, scans and reports, symptoms, diagnosis,

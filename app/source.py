@@ -1,8 +1,8 @@
 from pathlib import Path
 import streamlit as st
 import base64
-from main import code as mc
-from assist import code as ac
+from .main import code as mc
+from .assist import code as ac
 
 
 def code():
