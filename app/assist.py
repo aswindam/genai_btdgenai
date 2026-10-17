@@ -7,6 +7,7 @@ Rendered with Streamlit's native chat primitives (``st.chat_message`` /
 
 import base64
 import os
+from pathlib import Path
 
 import streamlit as st
 
@@ -44,10 +45,11 @@ SUGGESTIONS = [
 ]
 
 
-def _background_css(image_path="app/Chatbot.png"):
+def _background_css(image_path=None):
     """Background image plus a dark scrim so the text stays readable."""
+    image_path = image_path or Path(__file__).with_name("Chatbot.png")
     try:
-        image_base64 = base64.b64encode(open(image_path, "rb").read()).decode()
+        image_base64 = base64.b64encode(Path(image_path).read_bytes()).decode()
         background = f"url('data:image/png;base64,{image_base64}')"
     except OSError:
         background = "none"

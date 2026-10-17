@@ -6,8 +6,8 @@ from .assist import code as ac
 
 
 def code():
-    image_path = "app/first.png"
-    image_data = open(image_path, "rb").read()
+    image_path = Path(__file__).with_name("first.png")
+    image_data = image_path.read_bytes()
 
     # Convert the image data to base64
     image_base64 = base64.b64encode(image_data).decode()

@@ -14,21 +14,11 @@ if str(ROOT) not in sys.path:
 
 import streamlit as st
 import importlib
-import streamlit.components.v1 as components
 
 # This is a diagnostic line to help debug. It will print the Python path in your app.
 # st.write("Current Python Path:", sys.path)
 
 def run_app():
-    components.html(
-        """
-        <script type="text/javascript">
-            alert("⚠️ This app starts in Dark Mode. You can also adjust settings from the top-right menu.");
-        </script>
-        """,
-        height=0,
-    )
-
     def load_and_display_module(module_name):
         try:
             # We will continue to use the absolute import path

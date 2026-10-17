@@ -1,4 +1,5 @@
 import base64
+from pathlib import Path
 
 import streamlit as st
 from PIL import Image
@@ -16,8 +17,8 @@ DEFAULT_QUESTION = ("Analyse this scan and describe any tumour related findings,
 def code():
     # Custom CSS for background image
     # Read the image file
-    image_path = "app/background.png"
-    image_data = open(image_path, "rb").read()
+    image_path = Path(__file__).with_name("background.png")
+    image_data = image_path.read_bytes()
 
     # Convert the image data to base64
     image_base64 = base64.b64encode(image_data).decode()

@@ -4,7 +4,7 @@ All model calls in this project go through here so that the provider can be
 swapped in a single place.  The backend is an Azure AI Foundry deployment that
 is accessed through the official Anthropic SDK (``AnthropicFoundry``).
 
-Configuration is read from environment variables:
+Configuration is read from environment variables or Streamlit secrets:
 
     AZURE_FOUNDRY_API_KEY   - API key of the Foundry project (required)
     AZURE_FOUNDRY_ENDPOINT  - Anthropic route of the project endpoint, e.g.
@@ -13,8 +13,7 @@ Configuration is read from environment variables:
                               the SDK appends the version segment itself)
     AZURE_FOUNDRY_MODEL     - deployment name, e.g. claude-opus-5
 
-If ``AZURE_FOUNDRY_API_KEY`` is not set, ``azure_claude_key`` from ``key.py``
-is used as a fallback so existing local setups keep working.
+The key can be supplied through an environment variable or Streamlit secrets.
 """
 
 import base64
@@ -37,30 +36,34 @@ EXTRA_BODY = {
 _client = None
 
 
+def _setting(name, default=None):
+    value = os.getenv(name)
+    if value:
+        return value
+    try:
+        import streamlit as st
+        value = st.secrets.get(name)
+        if value:
+            return str(value)
+    except Exception:
+        # Streamlit secrets are unavailable when running outside Streamlit.
+        pass
+    return default
+
+
 def _api_key():
-    key = os.getenv("AZURE_FOUNDRY_API_KEY")
+    key = _setting("AZURE_FOUNDRY_API_KEY")
     if key:
         return key
 
-    # Fallback: local key module (ideally not committed).
-    try:
-        from key import azure_claude_key
-        return azure_claude_key
-    except ImportError:
-        try:
-            from app.key import azure_claude_key
-            return azure_claude_key
-        except ImportError:
-            pass
-
     raise RuntimeError(
-        "No Azure Foundry API key found. Set the AZURE_FOUNDRY_API_KEY "
-        "environment variable before starting the app."
+        "No Azure Foundry API key found. Set AZURE_FOUNDRY_API_KEY in the "
+        "environment or Streamlit secrets."
     )
 
 
 def get_endpoint():
-    endpoint = os.getenv("AZURE_FOUNDRY_ENDPOINT", DEFAULT_ENDPOINT).rstrip("/")
+    endpoint = _setting("AZURE_FOUNDRY_ENDPOINT", DEFAULT_ENDPOINT).rstrip("/")
     # The Anthropic SDK appends "/v1/..." to the base URL, so an endpoint that
     # already carries the version segment would resolve to "/v1/v1/messages".
     if endpoint.endswith("/v1"):
@@ -69,7 +72,7 @@ def get_endpoint():
 
 
 def get_model():
-    return os.getenv("AZURE_FOUNDRY_MODEL", DEFAULT_MODEL)
+    return _setting("AZURE_FOUNDRY_MODEL", DEFAULT_MODEL)
 
 
 def get_client():
