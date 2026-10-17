@@ -1,0 +1,11 @@
+[theme]
+# Dark theme so the light text used over the background images stays readable
+# (sidebar included) without per-widget colour overrides.
+base = "dark"
+primaryColor = "#7FC4FF"
+backgroundColor = "#060C1C"
+secondaryBackgroundColor = "#121C33"
+textColor = "#EAF2FF"
+
+[browser]
+gatherUsageStats = false

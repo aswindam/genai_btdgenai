@@ -1,0 +1,18 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Secrets - never commit API keys
+key.py
+app/key.py
+.streamlit/secrets.toml
+
+# Local logs and test artefacts
+*.log
+ui_*.png
+verify_out.log

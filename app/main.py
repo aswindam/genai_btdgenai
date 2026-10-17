@@ -1,16 +1,16 @@
+import base64
+
 import streamlit as st
 from PIL import Image
-import google.generativeai as genai
-import base64
-import warnings
+
+import llm
+
+
+DEFAULT_QUESTION = ("Analyse this scan and describe any tumour related findings, "
+                    "including location and type if visible.")
 
 
 def code():
-    # Creating API key from google-gemini and configuring API key
-    global img
-    api_key = 'AIzaSyB9eNsm-iOLawbIm-yvuD7vmMsD5IDF1bY'
-    genai.configure(api_key=api_key)
-
     # Custom CSS for background image
     # Read the image file
     image_path = "app/background.png"
@@ -24,9 +24,11 @@ def code():
         f"""
         <style>
             .stApp {{
-                background-image: url('data:image/png;base64,{image_base64}');
+                background-image: linear-gradient(rgba(6, 12, 28, 0.82), rgba(6, 12, 28, 0.90)),
+                                  url('data:image/png;base64,{image_base64}');
                 background-size: cover;
                 background-repeat: no-repeat;
+                background-attachment: fixed;
             }}
         </style>
         """,
@@ -43,15 +45,19 @@ def code():
     # Upload file button
     uploaded_file = st.file_uploader("**Choose a file**", type=["jpg", "jpeg", "png"])
 
-    if uploaded_file is not None:
-        img = Image.open(uploaded_file)
+    check = st.button('Generate Image')
+
+    # Derive the image from the upload itself, so that "Check with AI" works
+    # even when "Generate Image" was never pressed.
+    img = Image.open(uploaded_file) if uploaded_file is not None else None
+
+    if img is not None and check:
         st.image(img, caption='Uploaded Image', use_column_width=True)
 
     def gen_content(input_prompt, input_text, img):
-        model = genai.GenerativeModel('gemini-pro-vision')
-        response = model.generate_content([input_prompt, input_text, img], stream=True)
-        response.resolve()
-        return response
+        # An empty text block is rejected by the API, so fall back to a default.
+        question = (input_text or '').strip() or DEFAULT_QUESTION
+        return llm.generate(prompt=question, system=input_prompt, image=img)
 
     if st.button("Check with AI"):
         if uploaded_file is not None:
@@ -61,13 +67,15 @@ def code():
                                You will receive input images to classify tumors, 
                                and you will have to answer questions based on the input image.
                                """
-                conclusion = gen_content(input_prompt, input_text, img)
+                with st.spinner("Analysing the scan..."):
+                    conclusion = gen_content(input_prompt, input_text, img)
 
-                result = st.text_area("Conclusion based on your input and uploaded image", value=conclusion.text,
-                                      height=300,
-                                      key="result_conclusion")
-
-                st.write(result)
+                st.subheader("Conclusion based on your input and uploaded image")
+                # A bordered container keeps the markdown formatting intact
+                # (headings, bullets, bold) instead of printing it literally,
+                # and the dark theme gives it a readable card look by default.
+                with st.container(border=True):
+                    st.markdown(conclusion)
 
             except Exception as e:
                 st.error(f"Error: {e}")
